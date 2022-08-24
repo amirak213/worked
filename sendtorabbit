@@ -1,0 +1,16 @@
+package com.example.sahrelocationproject.tools
+
+import android.graphics.Bitmap
+
+import android.os.AsyncTask
+
+
+
+
+class SendToRabbitMQ :  AsyncTask<String?, Void?, Bitmap?>() {
+
+
+    override fun doInBackground(vararg p0: String?): Bitmap? {
+        TODO("Not yet implemented")
+    }
+}
