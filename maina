@@ -1,0 +1,52 @@
+package com.example.sahrelocationproject
+
+import android.os.Bundle
+import android.util.Log
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import com.example.sahrelocationproject.tools.LocationTools
+import com.google.android.gms.location.FusedLocationProviderClient
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var shareLocationBtn: Button ;
+    private lateinit var followLocationBtn: Button ;
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        shareLocationBtn = findViewById(R.id.share_location_btn)
+        followLocationBtn = findViewById(R.id.follow_location_btn)
+        val context = this.applicationContext
+
+
+
+        shareLocationBtn.setOnClickListener {
+            //print (LocationTools().getLastKnownLocation(this.applicationContext , fusedLocationClient))
+
+            MainScope().launch {
+                while(true) {
+                    LocationTools.UtilLocation.getLocation(context) { location ->
+                        val position = "${location.longitude},${location.latitude}"
+                        Log.d("tag", position)
+                        Thread {
+                            // do background stuff here
+                            LocationTools().produce(position)
+                            runOnUiThread {}
+                        }.start()
+
+                    }
+                    delay(10000)
+                }
+            }
+
+
+
+        }
+    }
+}
